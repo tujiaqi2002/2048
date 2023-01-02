@@ -4,7 +4,7 @@ const CELL_GAP = 1.5;
 
 
 
-export default class Grid {
+class Grid {
   #cells;
 
   constructor(gridElement) {
@@ -119,3 +119,5 @@ function createCellElements(gridElement) {
   }
   return cells;
 }
+
+export default Grid;
