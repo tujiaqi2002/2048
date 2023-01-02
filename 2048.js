@@ -3,20 +3,20 @@ import Tile from "./Tile.js";
 
 const gameBoard = document.getElementById("game-board");
 const currentScore = document.getElementById("current-score");
-const highestScore = document.getElementById("highest-score");
+const bestScore = document.getElementById("best-score");
 const localStorage = window.localStorage;
 var score = 0;
 
-if (!localStorage.getItem("highest-score")) {
-  localStorage.setItem("highest-score", 0);
+if (!localStorage.getItem("best-score")) {
+  localStorage.setItem("best-score", 0);
   console.log("1");
 }
-var highest = localStorage.getItem("highest-score");
+var best = localStorage.getItem("best-score");
 
-highestScore.innerHTML = localStorage.getItem("highest-score");
+bestScore.innerHTML = localStorage.getItem("best-score");
 
 
-console.log(highest)
+console.log(best)
 
 
 const grid = new Grid(gameBoard);
@@ -88,9 +88,9 @@ async function handleInput(e) {
   //check for end state
   if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
     newTile.waitForTransition(true).then(() => {
-          //update highest score
-          if (score > highest) {
-            localStorage.setItem("highest-score", score);
+          //update best score
+          if (score > best) {
+            localStorage.setItem("best-score", score);
           }
       alert("You lose");
     });
