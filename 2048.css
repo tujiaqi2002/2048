@@ -4,8 +4,6 @@
 }
 
 body {
-  top: 0;
-  bottom: 0;
   background-color: #eef4fa;
   display: flex;
   flex-direction: column;

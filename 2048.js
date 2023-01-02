@@ -6,8 +6,11 @@ const gameBoard = document.getElementById("game-board");
 const currentScore = document.getElementById("current-score");
 const bestScore = document.getElementById("best-score");
 const localStorage = window.localStorage;
+const winHeight = window.innerHeight;
 var score = 0;
 var touchstartCord, touchendCord;
+
+window.scrollTo(0, winHeight / 2);
 
 if (!localStorage.getItem("best-score")) {
   localStorage.setItem("best-score", 0);
