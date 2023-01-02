@@ -38,7 +38,7 @@ export default class Grid {
     return this.#cells.filter((cell) => cell.tile == null);
   }
 
-  get cells(){
+  get cells() {
     return this.#cells;
   }
 
@@ -103,6 +103,7 @@ class Cell {
     this.tile.value = this.tile.value + this.mergeTile.value;
     this.mergeTile.remove();
     this.mergeTile = null;
+    return this.tile.value / 2;
   }
 }
 
