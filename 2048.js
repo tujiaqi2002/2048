@@ -11,13 +11,10 @@ var touchstartCord, touchendCord;
 
 if (!localStorage.getItem("best-score")) {
   localStorage.setItem("best-score", 0);
-  console.log("1");
 }
+
 var best = localStorage.getItem("best-score");
-
 bestScore.innerHTML = localStorage.getItem("best-score");
-
-console.log(best);
 
 const grid = new Grid(gameBoard);
 grid.randomEmptyCell().tile = new Tile(gameBoard);
@@ -26,13 +23,11 @@ setupInput();
 
 function setupInput() {
   window.addEventListener("keydown", handleInput, { once: true });
-  window.addEventListener("touchstart", handleMobileInput, { once: true });
-  window.addEventListener("touchend", handleMobileInput, { once: true });
+  gameBoard.addEventListener("touchstart", handleMobileInput, { once: true });
+  gameBoard.addEventListener("touchend", handleMobileInput, { once: true });
 }
 
 async function handleInput(e) {
-  console.log(e.type);
-  console.log(e.key);
   switch (e.key) {
     case "w":
     case "ArrowUp": {
@@ -80,6 +75,11 @@ async function handleInput(e) {
     if (cell.mergeTile) {
       score += cell.mergeTile.value;
     }
+    //update best score
+    if (score > best) {
+      localStorage.setItem("best-score", score);
+      bestScore.innerHTML = score;
+    }
     cell.mergeTiles();
     currentScore.innerHTML = score;
   });
@@ -102,13 +102,13 @@ async function handleInput(e) {
 }
 
 async function handleMobileInput(e) {
-  e.preventDefault();
-  if (e.type === "touchstart") {
+  if (e.type == "touchstart") {
     touchstartCord = new Coordinate(
       e.changedTouches[0].screenX,
       e.changedTouches[0].screenY
     );
   } else {
+    e.preventDefault();
     touchendCord = new Coordinate(
       e.changedTouches[0].screenX,
       e.changedTouches[0].screenY
@@ -141,6 +141,9 @@ async function handleMobileInput(e) {
         return;
       }
       await moveRight();
+    } else {
+      setupInput();
+      return;
     }
 
     console.log(touchendCord);
@@ -148,6 +151,11 @@ async function handleMobileInput(e) {
     grid.cells.forEach((cell) => {
       if (cell.mergeTile) {
         score += cell.mergeTile.value;
+      }
+      //update best score
+      if (score > best) {
+        localStorage.setItem("best-score", score);
+        bestScore.innerHTML = score;
       }
       cell.mergeTiles();
       currentScore.innerHTML = score;
@@ -159,16 +167,13 @@ async function handleMobileInput(e) {
     //check for end state
     if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
       newTile.waitForTransition(true).then(() => {
-        //update best score
-        if (score > best) {
-          localStorage.setItem("best-score", score);
-        }
         alert("You lose");
       });
       return;
     }
     setupInput();
   }
+  setupInput();
 }
 
 function moveUp() {
