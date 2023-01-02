@@ -23,7 +23,10 @@ setupInput();
 
 function setupInput() {
   window.addEventListener("keydown", handleInput, { once: true });
-  gameBoard.addEventListener("touchstart", handleMobileInput, { once: true });
+  gameBoard.addEventListener("touchstart", handleMobileInput, {
+    once: true,
+    passive: false,
+  });
   gameBoard.addEventListener("touchend", handleMobileInput, { once: true });
 }
 
@@ -102,13 +105,15 @@ async function handleInput(e) {
 }
 
 async function handleMobileInput(e) {
+  e.preventDefault();
   if (e.type == "touchstart") {
     touchstartCord = new Coordinate(
       e.changedTouches[0].screenX,
       e.changedTouches[0].screenY
     );
   } else {
-    e.preventDefault();
+    console.log(e.preventDefault());
+
     touchendCord = new Coordinate(
       e.changedTouches[0].screenX,
       e.changedTouches[0].screenY
