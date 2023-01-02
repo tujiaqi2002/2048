@@ -23,11 +23,11 @@ setupInput();
 
 function setupInput() {
   window.addEventListener("keydown", handleInput, { once: true });
-  gameBoard.addEventListener("touchstart", handleMobileInput, {
+  window.addEventListener("touchstart", handleMobileInput, {
     once: true,
     passive: false,
   });
-  gameBoard.addEventListener("touchend", handleMobileInput, { once: true });
+  window.addEventListener("touchend", handleMobileInput, { once: true });
 }
 
 async function handleInput(e) {
