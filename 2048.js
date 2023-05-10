@@ -50,7 +50,8 @@ function restartGame() {
   grid.randomEmptyCell().tile = new Tile(gameBoard);
   gameOver.style.display = 'none';
   setupInput();
-  currentScore.innerHTML = 0;
+  score = 0;
+  currentScore.innerHTML = score;
 }
 function setupInput() {
   window.addEventListener('keydown', handleInput, { once: true });
