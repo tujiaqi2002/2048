@@ -1,42 +1,66 @@
-import Grid from "./Grid.js";
-import Tile from "./Tile.js";
-import Coordinate from "./Coordinate.js";
+import Grid from './Grid.js';
+import Tile from './Tile.js';
+import Coordinate from './Coordinate.js';
 
-const gameBoard = document.getElementById("game-board");
-const currentScore = document.getElementById("current-score");
-const bestScore = document.getElementById("best-score");
+const gameBoard = document.getElementById('game-board');
+const currentScore = document.getElementById('current-score');
+const bestScore = document.getElementById('best-score');
+
+const gameOver = document.getElementById('game-over');
+
 const localStorage = window.localStorage;
-const winHeight = window.innerHeight;
+document.getElementById('restart-button').addEventListener('click', function () {
+  restartGame(), { once: true };
+});
+
 var score = 0;
 var touchstartCord, touchendCord;
 
-window.scrollTo(0, winHeight / 2);
-
-if (!localStorage.getItem("best-score")) {
-  localStorage.setItem("best-score", 0);
+if (!localStorage.getItem('best-score')) {
+  localStorage.setItem('best-score', 0);
 }
 
-var best = localStorage.getItem("best-score");
-bestScore.innerHTML = localStorage.getItem("best-score");
+var best = localStorage.getItem('best-score');
+bestScore.innerHTML = localStorage.getItem('best-score');
 
-const grid = new Grid(gameBoard);
+var grid = new Grid(gameBoard);
+// Get the bounding rectangle of the source element
+let rect = gameBoard.getBoundingClientRect();
+
+// Apply the position to the target element
+gameOver.style.position = 'absolute'; // We need absolute positioning
+
+gameOver.style.top = rect.top + 'px'; // Add 'px' to make it valid CSS
+gameOver.style.left = rect.left + 'px';
+gameOver.style.width = rect.width + 'px';
+gameOver.style.height = rect.height + 'px';
+
 grid.randomEmptyCell().tile = new Tile(gameBoard);
 grid.randomEmptyCell().tile = new Tile(gameBoard);
 setupInput();
 
+function restartGame() {
+  grid.cleanGrid();
+  grid = new Grid(gameBoard);
+  grid.randomEmptyCell().tile = new Tile(gameBoard);
+  grid.randomEmptyCell().tile = new Tile(gameBoard);
+  gameOver.style.display = 'none';
+  setupInput();
+  currentScore.innerHTML = 0;
+}
 function setupInput() {
-  window.addEventListener("keydown", handleInput, { once: true });
-  window.addEventListener("touchstart", handleMobileInput, {
+  window.addEventListener('keydown', handleInput, { once: true });
+  window.addEventListener('touchstart', handleMobileInput, {
     once: true,
     passive: false,
   });
-  window.addEventListener("touchend", handleMobileInput, { once: true });
+  window.addEventListener('touchend', handleMobileInput, { once: true });
 }
 
 async function handleInput(e) {
   switch (e.key) {
-    case "w":
-    case "ArrowUp": {
+    case 'w':
+    case 'ArrowUp': {
       if (!canMoveUp()) {
         setupInput();
         return;
@@ -44,8 +68,8 @@ async function handleInput(e) {
       await moveUp();
       break;
     }
-    case "s":
-    case "ArrowDown": {
+    case 's':
+    case 'ArrowDown': {
       if (!canMoveDown()) {
         setupInput();
         return;
@@ -53,8 +77,8 @@ async function handleInput(e) {
       await moveDown();
       break;
     }
-    case "a":
-    case "ArrowLeft": {
+    case 'a':
+    case 'ArrowLeft': {
       if (!canMoveLeft()) {
         setupInput();
         return;
@@ -62,8 +86,8 @@ async function handleInput(e) {
       await moveLeft();
       break;
     }
-    case "d":
-    case "ArrowRight": {
+    case 'd':
+    case 'ArrowRight': {
       if (!canMoveRight()) {
         setupInput();
         return;
@@ -83,7 +107,7 @@ async function handleInput(e) {
     }
     //update best score
     if (score > best) {
-      localStorage.setItem("best-score", score);
+      localStorage.setItem('best-score', score);
       bestScore.innerHTML = score;
     }
     cell.mergeTiles();
@@ -98,10 +122,11 @@ async function handleInput(e) {
     newTile.waitForTransition(true).then(() => {
       //update best score
       if (score > best) {
-        localStorage.setItem("best-score", score);
+        localStorage.setItem('best-score', score);
       }
-      alert("You lose");
     });
+    document.getElementById('game-over').style.display = 'flex';
+
     return;
   }
   setupInput();
@@ -109,18 +134,12 @@ async function handleInput(e) {
 
 async function handleMobileInput(e) {
   e.preventDefault();
-  if (e.type == "touchstart") {
-    touchstartCord = new Coordinate(
-      e.changedTouches[0].screenX,
-      e.changedTouches[0].screenY
-    );
+  if (e.type == 'touchstart') {
+    touchstartCord = new Coordinate(e.changedTouches[0].screenX, e.changedTouches[0].screenY);
   } else {
     console.log(e.preventDefault());
 
-    touchendCord = new Coordinate(
-      e.changedTouches[0].screenX,
-      e.changedTouches[0].screenY
-    );
+    touchendCord = new Coordinate(e.changedTouches[0].screenX, e.changedTouches[0].screenY);
 
     let deltaX = touchendCord.x - touchstartCord.x;
     let deltaY = touchendCord.y - touchstartCord.y;
@@ -162,11 +181,29 @@ async function handleMobileInput(e) {
       }
       //update best score
       if (score > best) {
-        localStorage.setItem("best-score", score);
+        localStorage.setItem('best-score', score);
         bestScore.innerHTML = score;
       }
       cell.mergeTiles();
       currentScore.innerHTML = score;
+
+      const digits = Math.ceil(Math.log10(this.value));
+
+      switch (digits) {
+        case 1:
+          currentScore.style.fontSize = '7.5vmin';
+          log(currentScore);
+          break;
+        case 2:
+          currentScore.style.fontSize = '6.75vmin';
+          break;
+        case 3:
+          currentScore.style.fontSize = '6vmin';
+          break;
+        case 4:
+          currentScore.style.fontSize = '5.25vmin';
+          break;
+      }
     });
 
     const newTile = new Tile(gameBoard);
@@ -175,7 +212,14 @@ async function handleMobileInput(e) {
     //check for end state
     if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
       newTile.waitForTransition(true).then(() => {
-        alert("You lose");
+        //update best score
+        if (score > best) {
+          localStorage.setItem('best-score', score);
+        }
+      });
+      document.getElementById('game-over').style.display = 'flex';
+      document.getElementById('restart-button').addEventListener('click', function () {
+        // Code to reset the game goes here
       });
       return;
     }

@@ -10,11 +10,22 @@
   </head>
 
   <body>
-    <div id="game-title">2048</div>
-    <div id="score-section">
-      <div id="current-score-section">Score: <span id="current-score">0</span></div>
-      <div id="best-score-section">Best: <span id="best-score">0</span></div>
+    <div id="info-section">
+      <div id="game-title">2048</div>
+      <div id="score-section">
+        <div id="current-score-section">Score: <span id="current-score">0</span></div>
+        <div id="best-score-section">Best: <span id="best-score">0</span></div>
+      </div>
+      <button id="restart-button">
+        <img src="restart-button.svg" alt="Restart" />
+      </button>
     </div>
+
     <div id="game-board"></div>
+    <div id="game-over" class="game-over">
+      <div class="game-over-content">
+        <h2>Game Over</h2>
+      </div>
+    </div>
   </body>
 </html>

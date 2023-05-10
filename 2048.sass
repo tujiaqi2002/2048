@@ -1,10 +1,10 @@
 *, *::before, *::after
     box-sizing: border-box
-    font-family: Arial
+    font-family: SF Pro Display,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif
 
 body
 
-    background-color: #eef4fa
+    background-color: #FFFFFF
     display: flex
     flex-direction: column
     justify-content: center
@@ -15,41 +15,72 @@ body
     overflow-y: hidden
     position: relative
 
+#info-section
+    width: 70vmin
+    display: flex
+    flex-direction: row
+    justify-content: space-evenly
+
 #game-title
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+    font-family: SF Pro Display,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif
     font-weight: bolder
     font-size: 12vmin
-    color: #595959
+    color: #202020
+    padding-right: 2vmin
 
 #score-section
-    justify-content: space-around
-    gap: 2vmin
+    width: 20vmin
+    justify-content: center
     display: flex
-
+    flex-direction: column
+    gap: 1vmin
     border-radius: 1vmin
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
-    font-weight: bolder
-    font-size: 5.5vmin
+    font-family: SF Pro Display,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif
+    font-weight: 900
+    font-size: 3.5vmin
     margin: 1vmin
 
 #score-section *
-    background-color: #AAA
-    color: #fcf4f4
-    border-radius: 1vmin
-    padding: 0.8vmin
+    color: #202020
 
 #game-board
     display: grid
     grid-template-columns: repeat(var(--grid-size), var(--cell-size))
     grid-template-rows: repeat(var(--grid-size), var(--cell-size))
-    background-color: #CCC
+    background-color: #404040
     gap: var(--cell-gap)
-    border-radius: 1vmin
+    border-radius: 1.5vmin
     padding: var(--cell-gap)
     position: relative
 
+.game-over
+    animation: game-over-effect 1000ms ease-out
+    display: none
+    background-color: rgba(0, 0, 0, 0.7)
+    z-index: 10
+    position: absolute
+    border-radius: 1.1vmin
+
+    &-content
+        font-size: 4.4vmin
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        text-align: center
+        color: white
+
+#restart-button
+    border: none
+    background: none
+    cursor: pointer
+
+    & img
+        width: 6vmin
+        height: 6vmin
+
 .cell
-    background-color: #AAA
+    background-color: #ffffff
     border-radius: 1vmin
 
 .tile
@@ -63,12 +94,29 @@ body
     top: calc(var(--y) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap))
     left: calc(var(--x) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap))
     font-weight: bold
-    background-color: hsl(0, 50%, var(--background-lightness))
-    color: hsl(0, 25%, var(--text-lightness))
-    animation: show 200ms ease-in-out
+    background-color: hsl(0, 0%, calc(var(--background-lightness) / 1.05) )
+    color: hsl(0, 0%, var(--text-lightness) )
     transition: 100ms ease-in-out
+
+.tile.merging
+    animation: merge 0.3s ease-out
+
+.tile.show
+    animation: show 0.2s ease-in-out
+
+@keyframes merge
+    0%
+        transform: scale(1)
+    50%
+        transform: scale(1.1)
+    100%
+        transform: scale(1)
 
 @keyframes show
     0%
         opacity: .5
         transform: scale(0)
+
+@keyframes game-over-effect
+    0%
+        opacity: 0
