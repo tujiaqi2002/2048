@@ -34,17 +34,18 @@ body {
   width: 20vmin;
   justify-content: center;
   display: flex;
-  flex-direction: column;
-  gap: 1vmin;
+  align-items: center;
+  gap: 3vmin;
   border-radius: 1vmin;
   font-family: SF Pro Display, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 900;
-  font-size: 3.5vmin;
+  font-size: 3vmin;
   margin: 1vmin;
 }
 
 #score-section * {
   color: #202020;
+  text-align: center;
 }
 
 #game-board {
@@ -82,8 +83,10 @@ body {
   cursor: pointer;
 }
 #restart-button img {
-  width: 5vmin;
-  height: 5vmin;
+  justify-content: center;
+  align-items: center;
+  width: 2.5vmin;
+  height: 2.5vmin;
 }
 
 .cell {

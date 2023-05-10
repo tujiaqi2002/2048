@@ -52,6 +52,7 @@ function restartGame() {
   setupInput();
   score = 0;
   currentScore.innerHTML = score;
+  bestScore.innerHTML = localStorage.getItem('best-score');
 }
 function setupInput() {
   window.addEventListener('keydown', handleInput, { once: true });
