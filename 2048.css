@@ -28,7 +28,6 @@ body {
   font-weight: bolder;
   font-size: 12vmin;
   color: #202020;
-  padding-right: 2vmin;
 }
 
 #score-section {
@@ -83,8 +82,8 @@ body {
   cursor: pointer;
 }
 #restart-button img {
-  width: 6vmin;
-  height: 6vmin;
+  width: 5vmin;
+  height: 5vmin;
 }
 
 .cell {

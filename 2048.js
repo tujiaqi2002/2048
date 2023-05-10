@@ -13,6 +13,10 @@ document.getElementById('restart-button').addEventListener('click', function () 
   restartGame(), { once: true };
 });
 
+document.getElementById('restart-button').addEventListener('touchend', function () {
+  restartGame(), { once: true };
+});
+
 var score = 0;
 var touchstartCord, touchendCord;
 
@@ -218,9 +222,6 @@ async function handleMobileInput(e) {
         }
       });
       document.getElementById('game-over').style.display = 'flex';
-      document.getElementById('restart-button').addEventListener('click', function () {
-        // Code to reset the game goes here
-      });
       return;
     }
     setupInput();
